@@ -1,6 +1,5 @@
 import Header from "./components/Header/Header";
 import Profile from "./components/Profile/Profile";
-import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
@@ -10,7 +9,7 @@ import NavContainer from "./components/Nav/NavContainer";
 import UsersContainer from "./components/Users/UsersContainer";
 
 
-const App = (props) => {
+const App = () => {
   return (
     <>
       <Header />

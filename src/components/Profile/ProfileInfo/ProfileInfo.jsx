@@ -9,7 +9,6 @@ const ProfileInfo = ({ infoData }) => {
       address = {},
       email,
    } = infoData
-   //debugger
    return (
       <Container className='p-3 border-bottom border-primary border-2 mb-4'>
          <Row>

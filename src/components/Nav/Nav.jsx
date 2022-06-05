@@ -48,7 +48,7 @@ const routes = [{
 }]
 
 
-const Navig = (props) => {
+const Navig = () => {
 
    return (
 

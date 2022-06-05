@@ -8,7 +8,6 @@ const SET_INFO_DATA = "SET_INFO_DATA"
 
 let initialState = {
    postsData: [],
-   // Pagination It-kamasutra
    pageSize: 10,
    totalPostsCount: 0,
    currentPage: 1,

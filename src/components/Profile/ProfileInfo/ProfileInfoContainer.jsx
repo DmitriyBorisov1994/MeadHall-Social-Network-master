@@ -22,11 +22,11 @@ const ProfileInfoContainer = ({ infoData, setInfoData }) => {
       axios.get(`https://jsonplaceholder.typicode.com/users?id=${userID}`)
          .then(response => {
             setFetching(false)
-            console.log(response.data)
+            //console.log(response.data)
             setInfoData(response.data[0])
          });
    }, [userID])
-   console.log(infoData)
+   //console.log(infoData)
 
    return (
       <>
