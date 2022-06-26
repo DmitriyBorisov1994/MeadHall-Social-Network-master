@@ -1,10 +1,10 @@
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import ProfileInfo from './ProfileInfo'
 import { useParams } from 'react-router-dom'
 import { setInfoData } from '../../../redux/profileReducer'
 import Preloader from '../../common/Preloader'
+import { getUser } from '../../../api/axios'
 
 let mapStateToProps = (state) => {
    return {
@@ -19,11 +19,11 @@ const ProfileInfoContainer = ({ infoData, setInfoData }) => {
 
    useEffect(() => {
       setFetching(true)
-      axios.get(`https://jsonplaceholder.typicode.com/users?id=${userID}`)
-         .then(response => {
+      getUser(userID)
+         .then(data => {
             setFetching(false)
             //console.log(response.data)
-            setInfoData(response.data[0])
+            setInfoData(data[0])
          });
    }, [userID])
    //console.log(infoData)

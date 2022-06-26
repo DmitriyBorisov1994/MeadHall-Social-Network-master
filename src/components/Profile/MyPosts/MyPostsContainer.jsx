@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { getPosts } from '../../../api/axios'
 import { addPost, setCurrentPage, setPosts, setTotalPostsCount, updateNewPostText, updateNewPostTitle } from '../../../redux/profileReducer'
 import Preloader from '../../common/Preloader'
 import MyPosts from './MyPosts'
@@ -48,7 +49,7 @@ const MyPostsContainer = (props) => {
    useEffect(
       () => {
          setFetching(true)
-         axios.get(`https://jsonplaceholder.typicode.com/posts?userId=${userID}&_limit=${props.pageSize}&_page=${props.currentPage}`)
+         getPosts(userID, props.pageSize, props.currentPage)
             .then(response => {
                setFetching(false)
                //console.log(userID)
@@ -77,7 +78,7 @@ const MyPostsContainer = (props) => {
    let changePage = (page) => {
       //console.log(page)
       props.setCurrentPage(page)
-      axios.get(`https://jsonplaceholder.typicode.com/posts?userId=${userID}&_limit=${props.pageSize}&_page=${page}`)
+      getPosts(userID, props.pageSize, page)
          .then(response => {
             props.setPosts(response.data)
          })

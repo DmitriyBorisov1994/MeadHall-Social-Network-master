@@ -1,6 +1,6 @@
-import * as axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
+import { getUsers } from '../../api/axios'
 import { followActionCreator, setUsersActionCreator, unfollowActionCreator, toggleIsFetchingActionCreator } from '../../redux/usersReducer'
 import Preloader from '../common/Preloader'
 import Users from './Users'
@@ -38,11 +38,11 @@ const UsersContainer = ({ users, follow, unfollow, setUsers, isFetching, toggleI
 
    useEffect(() => {
       toggleIsFetching(true)
-      axios.get('https://jsonplaceholder.typicode.com/users')
-         .then(response => {
+      getUsers()
+         .then(data => {
             toggleIsFetching(false)
-            setUsers(response.data)
-            setTotalCount(response.data.length)
+            setUsers(data)
+            setTotalCount(data.length)
          });
    }, [])
 

@@ -1,4 +1,3 @@
-import Header from "./components/Header/Header";
 import Profile from "./components/Profile/Profile";
 import { Route, Routes } from "react-router-dom";
 import News from "./components/News/News";
@@ -7,6 +6,8 @@ import SettingsComponent from "./components/SettingsComponent/SettingsComponent"
 import DialogsContainer from "./components/Dialogs/DialogsContainer";
 import NavContainer from "./components/Nav/NavContainer";
 import UsersContainer from "./components/Users/UsersContainer";
+import Header from "./components/Header/Header";
+
 
 
 const App = () => {
