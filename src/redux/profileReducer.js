@@ -1,3 +1,5 @@
+import { fetchPosts, fetchUser } from "../api/axios";
+
 const ADD_POST = "ADD-POST";
 const UPDATE_NEW_POST_TITLE = "UPDATE-NEW-POST-TITLE"
 const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT";
@@ -5,6 +7,8 @@ const SET_POSTS = "SET_POSTS"
 const SET_CURRENT_PAGE = "SET_CURRENT_PAGE"
 const SET_TOTAL_POSTS_COUNT = "SET_TOTAL_POSTS_COUNT"
 const SET_INFO_DATA = "SET_INFO_DATA"
+const TOGGLE_IS_POSTS_FETCHING = "TOGGLE_IS_POSTS_FETCHING"
+const TOGGLE_IS_USER_INFO_FETCHING = "TOGGLE_IS_USER_INFO_FETCHING"
 
 let initialState = {
    postsData: [],
@@ -13,7 +17,9 @@ let initialState = {
    currentPage: 1,
    infoData: {},
    newPostText: "",
-   newPostTitle: ""
+   newPostTitle: "",
+   isPostsFetching: false,
+   isUserInfoFetching: false
 }
 
 const profileReducer = (state = initialState, action) => {
@@ -55,6 +61,12 @@ const profileReducer = (state = initialState, action) => {
       case SET_INFO_DATA:
          return { ...state, infoData: { ...action.info } }
 
+      case TOGGLE_IS_POSTS_FETCHING: {
+         return { ...state, isPostsFetching: action.isPostsFetching }
+      }
+      case TOGGLE_IS_USER_INFO_FETCHING: {
+         return { ...state, isUserInfoFetching: action.isUserInfoFetching }
+      }
 
       default: return state
    }
@@ -100,5 +112,41 @@ export const setInfoData = (info) => {
    return {
       type: SET_INFO_DATA,
       info
+   }
+}
+
+export const toggleIsPostsFetching = (isPostsFetching) => {
+   return {
+      type: TOGGLE_IS_POSTS_FETCHING,
+      isPostsFetching
+   };
+};
+export const toggleIsUserInfoFetching = (isUserInfoFetching) => {
+   return {
+      type: TOGGLE_IS_USER_INFO_FETCHING,
+      isUserInfoFetching
+   };
+};
+
+export const getPosts = (id, pageSize, currentPage) => {
+   return (dispatch) => {
+      dispatch(toggleIsPostsFetching(true))
+      fetchPosts(id, pageSize, currentPage)
+         .then(response => {
+            dispatch(toggleIsPostsFetching(false))
+            dispatch(setPosts(response.data))
+            dispatch(setTotalPostsCount(response.headers['x-total-count']))
+         })
+   }
+}
+
+export const getUserInfo = (id) => {
+   return (dispatch) => {
+      dispatch(toggleIsUserInfoFetching(true))
+      fetchUser(id)
+         .then(data => {
+            dispatch(toggleIsUserInfoFetching(false))
+            dispatch(setInfoData(data[0]))
+         });
    }
 }

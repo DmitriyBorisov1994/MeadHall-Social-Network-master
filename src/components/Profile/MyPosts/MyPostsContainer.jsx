@@ -1,9 +1,7 @@
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { getPosts } from '../../../api/axios'
-import { addPost, setCurrentPage, setPosts, setTotalPostsCount, updateNewPostText, updateNewPostTitle } from '../../../redux/profileReducer'
+import { addPost, getPosts, setPosts, updateNewPostText, updateNewPostTitle } from '../../../redux/profileReducer'
 import Preloader from '../../common/Preloader'
 import MyPosts from './MyPosts'
 
@@ -15,48 +13,18 @@ let mapStateToProps = (state) => {
       newPostTitle: state.profilePage.newPostTitle,
       pageSize: state.profilePage.pageSize,
       totalPostsCount: state.profilePage.totalPostsCount,
-      currentPage: state.profilePage.currentPage
+      currentPage: state.profilePage.currentPage,
+      isPostsFetching: state.profilePage.isPostsFetching
    }
 }
-/*let mapDispatchToProps = (dispatch) => {
-   return {
-      updateNewPostTitle: (title) => {
-         dispatch(updateNewPostTitleActionCreator(title))
-      },
-      updateNewPostText: (text) => {
-         dispatch(updateNewPostTextActionCreator(text))
-      },
-      addPost: () => {
-         dispatch(addPostActionCreator())
-      },
-      setPosts: (posts) => {
-         dispatch(setPostsActionCreator(posts))
-      },
-      setCurrentPage: (currentPage) => {
-         dispatch(setCurrentPageActionCreator(currentPage))
-      },
-      setTotalPostsCount: (postsCount) => {
-         dispatch(setTotalPostsCountActionCreator(postsCount))
-      }
-   }
-}*/
 
 const MyPostsContainer = (props) => {
 
-   const [fetching, setFetching] = useState(false)
    const { userID } = useParams()
 
    useEffect(
       () => {
-         setFetching(true)
-         getPosts(userID, props.pageSize, props.currentPage)
-            .then(response => {
-               setFetching(false)
-               //console.log(userID)
-               //console.log(response.data)
-               props.setPosts(response.data)
-               props.setTotalPostsCount(response.headers['x-total-count'])
-            })
+         props.getPosts(userID, props.pageSize, props.currentPage)
       }, [])
 
    let removePost = (id) => {
@@ -76,17 +44,12 @@ const MyPostsContainer = (props) => {
    }
 
    let changePage = (page) => {
-      //console.log(page)
-      props.setCurrentPage(page)
-      getPosts(userID, props.pageSize, page)
-         .then(response => {
-            props.setPosts(response.data)
-         })
+      props.getPosts(userID, props.pageSize, page)
    }
 
    return (
       <>
-         {fetching ? <Preloader />
+         {props.isPostsFetching ? <Preloader />
             : <MyPosts
                totalPostsCount={props.totalPostsCount}
                pageSize={props.pageSize}
@@ -110,6 +73,5 @@ export default connect(mapStateToProps,
       updateNewPostText,
       addPost,
       setPosts,
-      setCurrentPage,
-      setTotalPostsCount
+      getPosts
    })(MyPostsContainer)

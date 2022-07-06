@@ -1,38 +1,30 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import ProfileInfo from './ProfileInfo'
 import { useParams } from 'react-router-dom'
-import { setInfoData } from '../../../redux/profileReducer'
+import { getUserInfo } from '../../../redux/profileReducer'
 import Preloader from '../../common/Preloader'
-import { getUser } from '../../../api/axios'
 
 let mapStateToProps = (state) => {
    return {
       infoData: state.profilePage.infoData,
+      isUserInfoFetching: state.profilePage.isUserInfoFetching
    }
 }
 
-const ProfileInfoContainer = ({ infoData, setInfoData }) => {
+const ProfileInfoContainer = ({ infoData, isUserInfoFetching, getUserInfo }) => {
 
    const { userID } = useParams()
-   const [fetching, setFetching] = useState(false)
 
    useEffect(() => {
-      setFetching(true)
-      getUser(userID)
-         .then(data => {
-            setFetching(false)
-            //console.log(response.data)
-            setInfoData(data[0])
-         });
+      getUserInfo(userID)
    }, [userID])
-   //console.log(infoData)
 
    return (
       <>
-         {fetching ? <Preloader /> : <ProfileInfo infoData={infoData} />}
+         {isUserInfoFetching ? <Preloader /> : <ProfileInfo infoData={infoData} />}
       </>
    )
 }
 
-export default connect(mapStateToProps, { setInfoData })(ProfileInfoContainer)
+export default connect(mapStateToProps, { getUserInfo })(ProfileInfoContainer)

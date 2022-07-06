@@ -7,6 +7,7 @@ import DialogsContainer from "./components/Dialogs/DialogsContainer";
 import NavContainer from "./components/Nav/NavContainer";
 import UsersContainer from "./components/Users/UsersContainer";
 import Header from "./components/Header/Header";
+import AuthContainer from "./components/auth/AuthContainer";
 
 
 
@@ -14,6 +15,7 @@ const App = () => {
   return (
     <>
       <Header />
+      <AuthContainer />
       <NavContainer />
       <Routes>
         <Route

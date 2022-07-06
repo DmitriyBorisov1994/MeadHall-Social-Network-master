@@ -1,42 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { getUsers } from '../../api/axios'
-import { followActionCreator, setUsersActionCreator, unfollowActionCreator, toggleIsFetchingActionCreator } from '../../redux/usersReducer'
+import { follow, setUsers, unfollow, getUsers } from '../../redux/usersReducer'
 import Preloader from '../common/Preloader'
 import Users from './Users'
-//import UsersC from './UsersС'
 
 
 let mapStateToProps = (state) => {
    return {
       users: state.usersPage.users,
-      isFetching: state.usersPage.isFetching
+      isUsersFetching: state.usersPage.isUsersFetching
    }
 }
 
-let mapDispatchToProps = (dispatch) => {
-   return {
-      follow: (userId) => {
-         dispatch(followActionCreator(userId))
-      },
-      unfollow: (userId) => {
-         dispatch(unfollowActionCreator(userId))
-      },
-      setUsers: (users) => {
-         dispatch(setUsersActionCreator(users))
-      },
-      toggleIsFetching: (isFetching) => {
-         dispatch(toggleIsFetchingActionCreator(isFetching))
-      }
-   }
-}
+const UsersContainer = ({ users, follow, unfollow, isUsersFetching, getUsers }) => {
 
-const UsersContainer = ({ users, follow, unfollow, setUsers, isFetching, toggleIsFetching }) => {
-
-   const [count, setTotalCount] = useState(0)
-
-
-   useEffect(() => {
+   /*useEffect(() => {
       toggleIsFetching(true)
       getUsers()
          .then(data => {
@@ -44,15 +22,26 @@ const UsersContainer = ({ users, follow, unfollow, setUsers, isFetching, toggleI
             setUsers(data)
             setTotalCount(data.length)
          });
+   }, [])*/
+
+   useEffect(() => {
+      getUsers()
    }, [])
 
+   //debugger
    return (
       <>
-         {isFetching ? <Preloader />
+         {isUsersFetching ? <Preloader />
             : <Users users={users} follow={follow} unfollow={unfollow} />}
       </>
 
    )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer)
+
+export default connect(mapStateToProps,
+   {
+      follow, setUsers, unfollow,
+      getUsers: getUsers
+   }
+)(UsersContainer)
