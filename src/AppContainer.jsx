@@ -1,12 +1,18 @@
 import App from "./App";
+import { connect } from 'react-redux'
 
+let mapStateToProps = (state) => {
+  return {
+    isLogined: state.auth.success
+  }
+}
 
-
-const AppContainer = () => {
+const AppContainer = ({ isLogined }) => {
+  console.log(isLogined)
   return (
-    <App>
+    <App isLogined={isLogined}>
     </App>
   );
 };
 
-export default AppContainer;
+export default connect(mapStateToProps)(AppContainer);

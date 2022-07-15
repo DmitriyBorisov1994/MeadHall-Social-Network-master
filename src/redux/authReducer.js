@@ -8,7 +8,7 @@ const SET_SUCCESS = 'SET_SUCCESS'
 
 let initialState = {
    login: '',
-   validName: false,
+   validLogin: false,
    pwd: '',
    validPwd: false,
    matchPwd: '',
@@ -20,7 +20,7 @@ const authReducer = (state = initialState, action) => {
 
    switch (action.type) {
       case SET_USER_LOGIN: return { ...state, login: action.login }
-      case USER_VALIDATION: return { ...state, validName: action.validName }
+      case USER_VALIDATION: return { ...state, validLogin: action.validLogin }
       case SET_PWD: return { ...state, pwd: action.pwd }
       case PWD_VALIDATION: return { ...state, validPwd: action.validPwd }
       case SET_MATCH_PWD: return { ...state, matchPwd: action.matchPwd }
@@ -41,7 +41,7 @@ export const setUserLogin = (login) => {
 export const userValidation = (isValid) => {
    return {
       type: USER_VALIDATION,
-      validName: isValid
+      validLogin: isValid
    }
 }
 

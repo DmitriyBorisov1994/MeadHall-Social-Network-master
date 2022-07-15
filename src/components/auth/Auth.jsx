@@ -1,20 +1,8 @@
 import React from 'react'
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 
-const Auth = ({ validName, validPwd, validMatch, onEnterLogin,
-   onEnterPwd, onEnterMatch, login, pwd, matchPwd, success, onSuccess }) => {
-
-   const handleSubmit = (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      if (!validName || !validPwd || !validMatch) {
-         console.log('no validation')
-      } else {
-         console.log('yes validation')
-         onSuccess(true);
-      }
-
-   };
+const Auth = ({ validLogin, validPwd, validMatch, onEnterLogin,
+   onEnterPwd, onEnterMatch, login, pwd, matchPwd, success, handleSubmit }) => {
 
    return (
       <Container className=' p-3 mb-4' >
@@ -31,7 +19,7 @@ const Auth = ({ validName, validPwd, validMatch, onEnterLogin,
                         onChange={(e) => {
                            onEnterLogin(e.target.value)
                         }}
-                        isInvalid={!(login === '') && !validName}
+                        isInvalid={!(login === '') && !validLogin}
                      />
                      <Form.Control.Feedback type='invalid'>
                         Имя должно начинаться с буквы.
@@ -70,7 +58,7 @@ const Auth = ({ validName, validPwd, validMatch, onEnterLogin,
                      </Form.Control.Feedback>
                   </Form.Group>
                   <Button variant="primary" type="submit">
-                     Submit
+                     Отправить
                   </Button>
                </Form>
             </Col>

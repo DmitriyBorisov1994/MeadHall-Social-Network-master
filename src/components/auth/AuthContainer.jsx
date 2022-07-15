@@ -6,7 +6,7 @@ import { setUserLogin, userValidation, setPwd, pwdValidation, setMatchPwd, match
 let mapStateToProps = (state) => {
    return {
       login: state.auth.login,
-      validName: state.auth.validName,
+      validLogin: state.auth.validLogin,
       pwd: state.auth.pwd,
       validPwd: state.auth.validPwd,
       matchPwd: state.auth.matchPwd,
@@ -18,7 +18,7 @@ let mapStateToProps = (state) => {
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
-const AuthContainer = ({ login, validName, setUserLogin, userValidation,
+const AuthContainer = ({ login, validLogin, setUserLogin, userValidation,
    pwd, setPwd, validPwd, pwdValidation,
    matchPwd, setMatchPwd, validMatch, matchPwdValidation,
    success, setSuccess }) => {
@@ -39,6 +39,18 @@ const AuthContainer = ({ login, validName, setUserLogin, userValidation,
       setSuccess(true)
    }
 
+   const handleSubmit = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      if (!validLogin || !validPwd || !validMatch) {
+         console.log('no validation')
+      } else {
+         console.log('yes validation')
+         onSuccess(true);
+      }
+
+   };
+
    useEffect(() => {
       userValidation(USER_REGEX.test(login))
    }, [login])
@@ -50,7 +62,7 @@ const AuthContainer = ({ login, validName, setUserLogin, userValidation,
 
    return (
       <Auth
-         validName={validName}
+         validLogin={validLogin}
          validPwd={validPwd}
          validMatch={validMatch}
          onEnterLogin={onEnterLogin}
@@ -60,7 +72,7 @@ const AuthContainer = ({ login, validName, setUserLogin, userValidation,
          pwd={pwd}
          matchPwd={matchPwd}
          success={success}
-         onSuccess={onSuccess}
+         handleSubmit={handleSubmit}
       />
    )
 }
